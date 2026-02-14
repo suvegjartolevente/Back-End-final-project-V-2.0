@@ -1,10 +1,13 @@
-import prisma from "../src/prisma";
+import prisma from "../src/prisma.js";
 
 const getUsers = async (username, email) => {
   return prisma.user.findMany({
+    omit: {
+      password: true,
+    },
     where: {
       username,
-      available,
+      email,
     },
   });
 };
