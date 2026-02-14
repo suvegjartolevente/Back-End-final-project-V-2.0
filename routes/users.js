@@ -5,6 +5,8 @@ import getUserById from "../services/users/getUserById.js";
 import getUsers from "../services/users/getUsers.js";
 import createUser from "../services/users/createUser.js";
 
+
+
 const router = Router();
 
 router.get("/", async (req, res) => {
@@ -13,18 +15,27 @@ router.get("/", async (req, res) => {
   res.status(200).json(users);
 });
 
-router.post("/", async (req, res) => {
-  const { username, password, name, email, phoneNumber, pictureUrl } = req.body;
-  const newUser = await createUser(
-    username,
-    password,
-    name,
-    email,
-    phoneNumber,
-    pictureUrl,
-  );
-  res.status(201).json(newUser);
-});
+router.post(
+  "/",
+  async (req, res, next) => {
+    try {
+      const { username, password, name, email, phoneNumber, pictureUrl } =
+        req.body;
+      const newUser = await createUser(
+        username,
+        password,
+        name,
+        email,
+        phoneNumber,
+        pictureUrl,
+      );
+      res.status(201).json(newUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+  
+);
 
 router.get(
   "/:id",
