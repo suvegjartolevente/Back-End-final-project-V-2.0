@@ -1,9 +1,8 @@
 import express from "express";
-import usersRouter from "../routes/users.js"
+import usersRouter from "../routes/users.js";
+import hostsRouter from "../routes/hosts.js";
 import log from "../middleware/logMiddleware.js";
 import errorHandler from "../middleware/errorHandler.js";
-
-
 
 const app = express();
 
@@ -11,12 +10,13 @@ app.use(express.json());
 
 app.use(log);
 app.use("/users", usersRouter);
+app.use("/hosts", hostsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");
 });
 
- app.use(errorHandler);
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");

@@ -23,3 +23,13 @@ model User {
   pictureUrl  String
   //  bookings Booking[]
 }
+model Host {
+  id          String @id @default(uuid())
+  username    String @unique
+  password    String
+  name        String
+  email       String
+  phoneNumber String
+  pictureUrl  String
+  aboutMe String
+}

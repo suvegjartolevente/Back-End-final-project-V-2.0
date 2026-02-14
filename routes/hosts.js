@@ -1,41 +1,32 @@
 import { Router } from "express";
-
+import getHosts from "../services/hosts/getHosts.js";
+import createHost from "../services/hosts/createHosts.js";
+import deleteHost from "../services/hosts/deleteHost.js";
 import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
-import getUserById from "../services/users/getUserById.js";
-import getUsers from "../services/users/getUsers.js";
-import createUser from "../services/users/createUser.js";
-import deleteUser from "../services/users/deleteUser.js";
-import updateUserById from "../services/users/updateUserById.js";
-
+import updateHostById from "../services/hosts/updateHostById.js";
+import getHostById from "../services/hosts/getHostById.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
   const { username, email } = req.query;
-  const users = await getUsers(username, email);
-  res.status(200).json(users);
+  const hosts = await getHosts(username, email);
+  res.status(200).json(hosts);
 });
 
 router.post("/", async (req, res, next) => {
   try {
-    const {
+    const { username, password, name, email, phoneNumber, pictureUrl,aboutMe } =
+      req.body;
+    const newHost = await createHost(
       username,
       password,
       name,
       email,
       phoneNumber,
       pictureUrl,
-      aboutMe,
-    } = req.body;
-    const newUser = await createUser(
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      pictureUrl,
-      aboutMe,
+      aboutMe
     );
-    res.status(201).json(newUser);
+    res.status(201).json(newHost);
   } catch (error) {
     next(error);
   }
@@ -46,8 +37,8 @@ router.get(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const user = await getUserById(id);
-      res.status(200).json(user);
+      const host = await getHostById(id);
+      res.status(200).json(host);
     } catch (error) {
       next(error);
     }
@@ -62,7 +53,7 @@ router.put(
       const { id } = req.params;
       const { username, password, name, email, phoneNumber, pictureUrl } =
         req.body;
-      const updatedUser = await updateUserById(
+      const updatedHost = await updateHostById(
         id,
         username,
         password,
@@ -71,7 +62,7 @@ router.put(
         phoneNumber,
         pictureUrl,
       );
-      res.status(200).json(updatedUser);
+      res.status(200).json(updatedHost);
     } catch (error) {
       next(error);
     }
@@ -79,14 +70,15 @@ router.put(
   notFoundErrorHandler,
 );
 
+
 router.delete(
   "/:id",
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const deletedUserId = await deleteUser(id);
+      const deletedHostId = await deleteHost(id);
       res.status(200).json({
-        message: `User with id${deletedUserId} was deleted !`,
+        message: `Host with id${deletedHostId} was deleted !`,
       });
     } catch (error) {
       next(error);
