@@ -22,6 +22,7 @@ model User {
   phoneNumber String
   pictureUrl  String
   reviews     Review[]
+  bookings    Booking[]
 }
 
 model Host {
@@ -47,6 +48,7 @@ model Property {
   hostId        String
   rating        Int
   reviews       Review[]
+  bookings    Booking[]
 }
 
 model Review {
@@ -55,6 +57,24 @@ model Review {
   propertyId String
   rating      Int
   comment     String?
+
+  user     User?     @relation(fields: [userId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+
+  @@index([userId])
+  @@index([propertyId])
+}
+
+
+model Booking{
+  id          String  @id @default(uuid())
+  userId     String?
+  propertyId String
+  checkinDate DateTime
+  checkoutDate DateTime
+  numberOfGuests Int
+  totalPrice Int
+  bookingStatus String
 
   user     User?     @relation(fields: [userId], references: [id])
   property Property @relation(fields: [propertyId], references: [id])

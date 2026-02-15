@@ -3,12 +3,14 @@ import userData from "../src/data/users.json" with { type: "json" };
 import hostData from "../src/data/hosts.json" with { type: "json" };
 import reviewData from "../src/data/reviews.json" with { type: "json" };
 import propertyData from "../src/data/properties.json" with { type: "json" };
-
+import bookingData from "../src/data/bookings.json" with { type: "json" };
 async function main() {
   const { users } = userData;
   const { hosts } = hostData;
   const { properties } = propertyData;
   const { reviews } = reviewData;
+  const { bookings } = bookingData;
+
   
   for (const user of users) {
     await prisma.user.upsert({
@@ -38,6 +40,14 @@ async function main() {
       where: { id: review.id },
       update: {},
       create: review,
+    });
+  }
+
+  for (const booking of bookings) {
+    await prisma.booking.upsert({
+      where: { id: booking.id },
+      update: {},
+      create: booking,
     });
   }
 }

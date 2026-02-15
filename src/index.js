@@ -3,6 +3,7 @@ import usersRouter from "../routes/users.js";
 import hostsRouter from "../routes/hosts.js";
 import reviewsRouter from "../routes/reviews.js";
 import propertiesRouter from "../routes/properties.js";
+import bookingsRouter from "../routes/bookings.js";
 import log from "../middleware/logMiddleware.js";
 import errorHandler from "../middleware/errorHandler.js";
 
@@ -15,7 +16,7 @@ app.use("/users", usersRouter);
 app.use("/hosts", hostsRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/properties", propertiesRouter);
-
+app.use("/bookings", bookingsRouter);
 app.get("/", (req, res) => {
   res.send("Hello world!");
 });
