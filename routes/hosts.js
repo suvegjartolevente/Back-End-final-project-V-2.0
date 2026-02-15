@@ -8,15 +8,22 @@ import getHostById from "../services/hosts/getHostById.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const { username, email } = req.query;
-  const hosts = await getHosts(username, email);
+  const { name } = req.query;
+  const hosts = await getHosts(name);
   res.status(200).json(hosts);
 });
 
 router.post("/", async (req, res, next) => {
   try {
-    const { username, password, name, email, phoneNumber, pictureUrl,aboutMe } =
-      req.body;
+    const {
+      username,
+      password,
+      name,
+      email,
+      phoneNumber,
+      pictureUrl,
+      aboutMe,
+    } = req.body;
     const newHost = await createHost(
       username,
       password,
@@ -24,7 +31,7 @@ router.post("/", async (req, res, next) => {
       email,
       phoneNumber,
       pictureUrl,
-      aboutMe
+      aboutMe,
     );
     res.status(201).json(newHost);
   } catch (error) {
@@ -69,7 +76,6 @@ router.put(
   },
   notFoundErrorHandler,
 );
-
 
 router.delete(
   "/:id",

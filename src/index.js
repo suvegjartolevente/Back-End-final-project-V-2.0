@@ -1,6 +1,7 @@
 import express from "express";
 import usersRouter from "../routes/users.js";
 import hostsRouter from "../routes/hosts.js";
+import propertiesRouter from "../routes/properties.js";
 import log from "../middleware/logMiddleware.js";
 import errorHandler from "../middleware/errorHandler.js";
 
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(log);
 app.use("/users", usersRouter);
 app.use("/hosts", hostsRouter);
+app.use("/properties", propertiesRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");

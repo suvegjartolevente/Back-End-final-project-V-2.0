@@ -33,3 +33,16 @@ model Host {
   pictureUrl  String
   aboutMe String
 }
+model Property {
+  
+  id          String @id @default(uuid())
+  title    String 
+  description    String
+  location        String
+  pricePerNight       Decimal
+  bedroomCount Int
+  bathRoomCount  Int
+  maxGuestCount Int
+  hostId String
+  rating Int
+}
