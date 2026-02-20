@@ -12,6 +12,8 @@ const createProperty = async (
   rating,
 ) => {
   return await prisma.property.create({
+  
+  
     data: {
       title,
       description,
