@@ -4,8 +4,23 @@ import prisma from "../../src/prisma.js";
 
 const getHostById = async (id) => {
   const host = await prisma.host.findUnique({
-    omit: {
-      password: true,
+    select: {
+      id: true,
+      username: true,
+      password: false,
+      name: true,
+      email: true,
+      phoneNumber: true,
+      pictureUrl: true,
+      listings: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          location: true,
+          pricePerNight: true,
+        },
+      },
     },
     where: {
       id,

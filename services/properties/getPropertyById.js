@@ -4,6 +4,14 @@ import prisma from "../../src/prisma.js";
 
 const getPropertyById = async (id) => {
   const property = await prisma.property.findUnique({
+    include: {
+      reviews: {
+        select: {
+          comment: true,
+          rating: true,
+        },
+      },
+    },
     where: {
       id,
     },

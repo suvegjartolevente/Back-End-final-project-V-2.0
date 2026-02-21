@@ -34,6 +34,9 @@ model Host {
   phoneNumber String
   pictureUrl  String
   aboutMe     String
+  listings Property  []  
+
+
 }
 
 model Property {
@@ -41,14 +44,18 @@ model Property {
   title         String
   description   String
   location      String
-  pricePerNight Decimal
+  pricePerNight Float
   bedroomCount  Int
   bathRoomCount Int
   maxGuestCount Int
   hostId        String
   rating        Int
+  host         Host  @relation(fields: [hostId], references: [id])
   reviews       Review[]
   bookings    Booking[]
+
+   
+  @@index([hostId])
   
 }
 

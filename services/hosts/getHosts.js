@@ -2,12 +2,26 @@ import prisma from "../../src/prisma.js";
 
 const getHosts = async (name) => {
   return prisma.host.findMany({
-    omit: {
-      password: true,
-    },
     where: {
-      name
-      
+      name,
+    },
+    select: {
+      id:true,
+      username: true,
+      password: false,
+      name: true,
+      email: true,
+      phoneNumber: true,
+      pictureUrl: true,
+      listings: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          location: true,
+          pricePerNight: true,
+        },
+      },
     },
   });
 };

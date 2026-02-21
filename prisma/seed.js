@@ -11,10 +11,10 @@ async function main() {
   const { reviews } = reviewData;
   const { bookings } = bookingData;
 
-  
   for (const user of users) {
     await prisma.user.upsert({
       where: { id: user.id },
+
       update: {},
       create: user,
     });

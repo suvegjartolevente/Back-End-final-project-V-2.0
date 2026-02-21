@@ -23,6 +23,7 @@ router.post("/", async (req, res, next) => {
       phoneNumber,
       pictureUrl,
       aboutMe,
+      
     } = req.body;
     const newHost = await createHost(
       username,
