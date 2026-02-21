@@ -13,11 +13,13 @@ const createUser = async (
     return await prisma.user.create({
       data: { username, password, name, email, phoneNumber, pictureUrl },
     });
-  } catch (err) {
+  } catch (err) {console.log(`My error message ${err.message}`)
     if (err?.code === "P2002") {
       throw new DuplicateUsernameError("username");
     }
+    
     throw err;
+    
   }
 };
 

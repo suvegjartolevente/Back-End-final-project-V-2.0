@@ -49,6 +49,7 @@ model Property {
   rating        Int
   reviews       Review[]
   bookings    Booking[]
+  
 }
 
 model Review {

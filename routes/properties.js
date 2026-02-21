@@ -1,6 +1,6 @@
 import { Router } from "express";
 
- import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
+import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 
 import getProperties from "../services/properties/getProperties.js";
 import createProperty from "../services/properties/createProperty.js";
@@ -27,6 +27,7 @@ router.post("/", async (req, res, next) => {
       maxGuestCount,
       hostId,
       rating,
+      reviews,
     } = req.body;
     const newProperty = await createProperty(
       title,
@@ -38,6 +39,7 @@ router.post("/", async (req, res, next) => {
       maxGuestCount,
       hostId,
       rating,
+      reviews,
     );
     res.status(201).json(newProperty);
   } catch (error) {
