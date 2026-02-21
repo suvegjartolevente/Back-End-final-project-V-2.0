@@ -50,7 +50,7 @@ model Property {
   maxGuestCount Int
   hostId        String
   rating        Int
-  host         Host  @relation(fields: [hostId], references: [id])
+  host         Host  @relation(fields: [hostId], references: [id], onDelete: Cascade)
   reviews       Review[]
   bookings    Booking[]
 
@@ -85,7 +85,7 @@ model Booking{
   bookingStatus String
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  property Property @relation(fields: [propertyId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([propertyId])
