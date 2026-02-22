@@ -26,6 +26,8 @@ router.post("/", async (req, res, next) => {
       pictureUrl,
       aboutMe,
     } = req.body;
+   
+
     const newUser = await createUser(
       username,
       password,
