@@ -1,11 +1,41 @@
-export const valueTypeError = (datas) => {
+export const valueTypeError = (data) => {
   const missTypeValues = [];
-  for (const [key, value] of Object.entries(datas)) {
-    if (key === "propertyId" && typeof value !== "string") {
+
+  const stringFields = [
+    "propertyId",
+    "bookingStatus",
+    "username",
+    "password",
+    "name",
+    "email",
+    "phoneNumber",
+    "pictureUrl",
+    "aboutMe",
+    "title",
+    "description",
+    "location",
+    "hostId",
+    "userId",
+    "comment",
+    "checkinDate",
+    "checkoutDate",
+    "bookingStatus",
+  ];
+  const numberFields = [
+    "pricePerNight",
+    "bedroomCount",
+    "bathRoomCount",
+    "maxGuestCount",
+    "rating",
+    "numberOfGuests",
+    "totalPrice",
+  ];
+  for (const [key, value] of Object.entries(data)) {
+    if (stringFields.includes(key) && typeof value !== "string") {
       missTypeValues.push(key);
     }
 
-    if (key === "numberOfGuests" && typeof value !== "number") {
+    if (numberFields.includes(key) && typeof value !== "number") {
       missTypeValues.push(key);
     }
   }
