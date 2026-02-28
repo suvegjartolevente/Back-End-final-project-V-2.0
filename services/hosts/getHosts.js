@@ -6,9 +6,10 @@ const getHosts = async (name) => {
       name,
     },
     select: {
-      id:true,
+      id: true,
       username: true,
       password: false,
+      aboutMe: true,
       name: true,
       email: true,
       phoneNumber: true,

@@ -16,8 +16,8 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { userId, propertyId, rating, comment } = req.body;
-    const newReview = await createReview(userId, propertyId, rating, comment);
+    const data = req.body;
+    const newReview = await createReview(data);
     res.status(201).json(newReview);
   } catch (error) {
     next(error);

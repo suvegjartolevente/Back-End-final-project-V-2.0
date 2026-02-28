@@ -1,22 +1,22 @@
+import getMissingRequired from "../../errors/getMissingRequired.js";
+import InvalidValueTypeError from "../../errors/invalidValueTypeError.js";
 import MissingRequiredFieldsError from "../../errors/missingRequiredFieldsError.js";
+import { validationError } from "../../errors/validationError.js";
+import { valueTypeError } from "../../errors/valueTypeError.js";
 import prisma from "../../src/prisma.js";
+const requiredFields = ["userId", "propertyId", "rating", "comment"];
+const createReview = async (data) => {
+  const missingFields = getMissingRequired(data, requiredFields);
 
-const createReview = async (userId, propertyId, rating, comment) => {
-  const missingFields = [];
-  if (!userId) missingFields.push("userId");
-  if (!propertyId) missingFields.push("propertyId");
-  if (!rating) missingFields.push("rating");
-  if (!comment) missingFields.push("comment");
-
-  if (!userId || !propertyId || !rating || !comment)
-    throw new MissingRequiredFieldsError(missingFields);
+  const validationIssueList = validationError(data);
+  const valueTypeIssueList = valueTypeError(data);
+  if (missingFields.length) throw new MissingRequiredFieldsError(missingFields);
+  if (validationIssueList.length)
+    throw new MissingRequiredFieldsError(validationIssueList);
+  else if (valueTypeIssueList.length)
+    throw new InvalidValueTypeError(valueTypeIssueList);
   return await prisma.review.create({
-    data: {
-      userId,
-      propertyId,
-      rating,
-      comment,
-    },
+    data,
   });
 };
 

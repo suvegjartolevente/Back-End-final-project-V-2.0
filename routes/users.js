@@ -17,26 +17,9 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const {
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      pictureUrl,
-      aboutMe,
-    } = req.body;
-   
+    const data = req.body;
 
-    const newUser = await createUser(
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      pictureUrl,
-      aboutMe,
-    );
+    const newUser = await createUser(data);
     res.status(201).json(newUser);
   } catch (error) {
     next(error);

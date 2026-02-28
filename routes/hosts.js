@@ -15,25 +15,8 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const {
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      pictureUrl,
-      aboutMe,
-      
-    } = req.body;
-    const newHost = await createHost(
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      pictureUrl,
-      aboutMe,
-    );
+    const data = req.body;
+    const newHost = await createHost(data);
     res.status(201).json(newHost);
   } catch (error) {
     next(error);

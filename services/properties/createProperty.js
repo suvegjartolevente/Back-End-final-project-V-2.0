@@ -1,52 +1,34 @@
+import getMissingRequired from "../../errors/getMissingRequired.js";
+import InvalidValueTypeError from "../../errors/invalidValueTypeError.js";
 import MissingRequiredFieldsError from "../../errors/missingRequiredFieldsError.js";
+import { validationError } from "../../errors/validationError.js";
+import { valueTypeError } from "../../errors/valueTypeError.js";
 import prisma from "../../src/prisma.js";
+const requiredFields = [
+  "title",
+  "description",
+  "location",
+  "pricePerNight",
+  "bedroomCount",
+  "bathRoomCount",
+  "maxGuestCount",
+  "hostId",
+  "rating",
+];
 
-const createProperty = async (
-  title,
-  description,
-  location,
-  pricePerNight,
-  bedroomCount,
-  bathRoomCount,
-  maxGuestCount,
-  hostId,
-  rating,
-) => {
-  const missingFields = [];
-  if (!title) missingFields.push("title");
-  if (!description) missingFields.push("description");
-  if (!location) missingFields.push("location");
-  if (!pricePerNight) missingFields.push("pricePerNight");
-  if (!bedroomCount) missingFields.push("bedroomCount");
-  if (!bathRoomCount) missingFields.push("bathRoomCount");
-  if (!maxGuestCount) missingFields.push("maxGuestCount");
-  if (!hostId) missingFields.push("hostId");
-  if (!rating) missingFields.push("rating");
+const createProperty = async (data) => {
+  const missingFields = getMissingRequired(data, requiredFields);
 
-  if (
-    !title ||
-    !description ||
-    !location ||
-    !pricePerNight ||
-    !bedroomCount ||
-    !bathRoomCount ||
-    !maxGuestCount ||
-    !hostId ||
-    !rating
-  )
-    throw new MissingRequiredFieldsError(missingFields);
+  const validationIssueList = validationError(data);
+  const valueTypeIssueList = valueTypeError(data);
+  if (missingFields.length) throw new MissingRequiredFieldsError(missingFields);
+  if (validationIssueList.length)
+    throw new MissingRequiredFieldsError(validationIssueList);
+  else if (valueTypeIssueList.length)
+    throw new InvalidValueTypeError(valueTypeIssueList);
+
   return await prisma.property.create({
-    data: {
-      title,
-      description,
-      location,
-      pricePerNight,
-      bedroomCount,
-      bathRoomCount,
-      maxGuestCount,
-      hostId,
-      rating,
-    },
+    data,
   });
 };
 

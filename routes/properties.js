@@ -17,30 +17,8 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const {
-      title,
-      description,
-      location,
-      pricePerNight,
-      bedroomCount,
-      bathRoomCount,
-      maxGuestCount,
-      hostId,
-      rating,
-      reviews,
-    } = req.body;
-    const newProperty = await createProperty(
-      title,
-      description,
-      location,
-      pricePerNight,
-      bedroomCount,
-      bathRoomCount,
-      maxGuestCount,
-      hostId,
-      rating,
-      reviews,
-    );
+    const data = req.body;
+    const newProperty = await createProperty(data);
     res.status(201).json(newProperty);
   } catch (error) {
     next(error);
