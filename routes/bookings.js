@@ -15,24 +15,9 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const {
-      userId,
-      propertyId,
-      checkinDate,
-      checkoutDate,
-      numberOfGuests,
-      totalPrice,
-      bookingStatus,
-    } = req.body;
-    const newBooking = await createBooking(
-      userId,
-      propertyId,
-      checkinDate,
-      checkoutDate,
-      numberOfGuests,
-      totalPrice,
-      bookingStatus,
-    );
+    const data = req.body;
+
+    const newBooking = await createBooking(data);
     res.status(201).json(newBooking);
   } catch (error) {
     next(error);
