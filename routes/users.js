@@ -5,7 +5,7 @@ import getUserById from "../services/users/getUserById.js";
 import getUsers from "../services/users/getUsers.js";
 import createUser from "../services/users/createUser.js";
 import deleteUser from "../services/users/deleteUser.js";
-import updateUserById from "../services/users/updateUserById.js";
+import updatedUserById from "../services/users/updateUserById.js";
 
 const router = Router();
 
@@ -47,7 +47,7 @@ router.put(
       const { id } = req.params;
       const { username, password, name, email, phoneNumber, pictureUrl } =
         req.body;
-      const updatedUser = await updateUserById(
+      const updatedUser = await updatedUserById(
         id,
         username,
         password,
