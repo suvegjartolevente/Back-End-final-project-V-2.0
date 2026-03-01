@@ -5,7 +5,7 @@ export const validationError = (datas) => {
       value === undefined ||
       value === null ||
       value === "" ||
-      /^ *$/.test(value)
+      (typeof value === "string" && /^ *$/.test(value))
     ) {
       missingValues.push(key);
     }

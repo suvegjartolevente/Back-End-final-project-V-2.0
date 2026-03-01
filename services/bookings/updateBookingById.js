@@ -1,3 +1,4 @@
+import InvalidValueTypeError from "../../errors/invalidValueTypeError.js";
 import NotFoundError from "../../errors/notFoundError.js";
 
 import prisma from "../../src/prisma.js";
@@ -29,4 +30,4 @@ const updateBookingById = async (
   }
   return { message: ` Booking with id ${id} was updated` };
 };
-export default updateBookingById;
+export default updateBookingById

@@ -44,18 +44,10 @@ router.put(
   "/:id",
   async (req, res, next) => {
     try {
+      const data = req.body;
       const { id } = req.params;
-      const { username, password, name, email, phoneNumber, pictureUrl } =
-        req.body;
-      const updatedUser = await updatedUserById(
-        id,
-        username,
-        password,
-        name,
-        email,
-        phoneNumber,
-        pictureUrl,
-      );
+
+      const updatedUser = await updatedUserById(id, data);
       res.status(200).json(updatedUser);
     } catch (error) {
       next(error);
