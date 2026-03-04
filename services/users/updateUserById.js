@@ -9,14 +9,14 @@ import { valueTypeError } from "../../errors/valueTypeError.js";
 import prisma from "../../src/prisma.js";
 
 const updatedUserById = async (id, data) => {
+  const { id: ignore, ...safeData } = data;
   const validationIssueList = validationError(data);
   const valueTypeIssueList = valueTypeError(data);
-  console.log("Ez a data:", data);
-  console.log(` na ez mi ?${Object.entries(data).length}`);
+
   if (Object.entries(data).length === 0) {
     throw new EmptyUpdateBodyError();
   }
-   if (validationIssueList.length)
+  if (validationIssueList.length)
     throw new MissingRequiredFieldsError(validationIssueList);
 
   if (valueTypeIssueList.length)
@@ -24,11 +24,9 @@ const updatedUserById = async (id, data) => {
 
   try {
     const updatedUser = await prisma.user.update({
-      where: { id },
-      data,
+      where:{id},
+      data: safeData,
     });
-
-    console.log("LecsÓ result:", updatedUser);
 
     return updatedUser;
   } catch (err) {

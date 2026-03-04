@@ -2,27 +2,11 @@ import InvalidValueTypeError from "../../errors/invalidValueTypeError.js";
 import NotFoundError from "../../errors/notFoundError.js";
 
 import prisma from "../../src/prisma.js";
-const updateBookingById = async (
-  id,
-  userId,
-  propertyId,
-  checkinDate,
-  checkoutDate,
-  numberOfGuests,
-  totalPrice,
-  bookingStatus,
-) => {
+const updateBookingById = async (id, data) => {
+  const { id: ignore, ...safeData } = data;
   const updatedBooking = await prisma.booking.updateMany({
     where: { id },
-    data: {
-      userId,
-      propertyId,
-      checkinDate,
-      checkoutDate,
-      numberOfGuests,
-      totalPrice,
-      bookingStatus,
-    },
+    data: safeData,
   });
 
   if (updatedBooking.count === 0) {
@@ -30,4 +14,4 @@ const updateBookingById = async (
   }
   return { message: ` Booking with id ${id} was updated` };
 };
-export default updateBookingById
+export default updateBookingById;

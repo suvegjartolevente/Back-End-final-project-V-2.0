@@ -42,17 +42,8 @@ router.put(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { username, password, name, email, phoneNumber, pictureUrl } =
-        req.body;
-      const updatedHost = await updateHostById(
-        id,
-        username,
-        password,
-        name,
-        email,
-        phoneNumber,
-        pictureUrl,
-      );
+      const data = req.body;
+      const updatedHost = await updateHostById(id, data);
       res.status(200).json(updatedHost);
     } catch (error) {
       next(error);

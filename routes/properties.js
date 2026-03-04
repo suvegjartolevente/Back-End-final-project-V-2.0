@@ -44,29 +44,8 @@ router.put(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const {
-        title,
-        description,
-        location,
-        pricePerNight,
-        bedroomCount,
-        bathRoomCount,
-        maxGuestCount,
-        hostId,
-        rating,
-      } = req.body;
-      const updatedProperty = await updatePropertyById(
-        id,
-        title,
-        description,
-        location,
-        pricePerNight,
-        bedroomCount,
-        bathRoomCount,
-        maxGuestCount,
-        hostId,
-        rating,
-      );
+      const data = req.body;
+      const updatedProperty = await updatePropertyById(id, data);
       res.status(200).json(updatedProperty);
     } catch (error) {
       next(error);
