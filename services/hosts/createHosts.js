@@ -17,6 +17,7 @@ const requiredFields = [
 ];
 
 const createHost = async (data) => {
+  const { id: ignore, ...safeData } = data;
   const missingFields = getMissingRequired(data, requiredFields);
 
   const validationIssueList = validationError(data);
@@ -28,7 +29,7 @@ const createHost = async (data) => {
     throw new InvalidValueTypeError(valueTypeIssueList);
   try {
     return await prisma.host.create({
-      data,
+      data:safeData,
     });
   } catch (err) {
     if (err?.code === "P2002") {

@@ -15,6 +15,7 @@ const requiredFields = [
   "bookingStatus",
 ];
 const createBooking = async (data) => {
+  const { id: ignore, ...safeData } = data;
   const missingFields = getMissingRequired(data, requiredFields);
 
   const validationIssueList = validationError(data);
@@ -26,7 +27,7 @@ const createBooking = async (data) => {
     throw new InvalidValueTypeError(valueTypeIssueList);
 
   return await prisma.booking.create({
-    data,
+    data: safeData,
   });
 };
 

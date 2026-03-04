@@ -15,6 +15,7 @@ const requiredFields = [
 ];
 
 const createUser = async (data) => {
+  const { id: ignore, ...safeData } = data;
   const missingFields = getMissingRequired(data, requiredFields);
 
   const validationIssueList = validationError(data);
@@ -27,7 +28,7 @@ const createUser = async (data) => {
 
   try {
     return await prisma.user.create({
-      data,
+      data:safeData,
     });
   } catch (err) {
     if (err?.code === "P2002") {

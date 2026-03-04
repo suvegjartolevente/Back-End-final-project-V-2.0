@@ -5,6 +5,7 @@ import getBookingById from "../services/bookings/getBookingById.js";
 import createBooking from "../services/bookings/createBooking.js";
 import updateBookingById from "../services/bookings/updateBookingById.js";
 import deleteBooking from "../services/bookings/deleteBooking.js";
+import MissingIdError from "../errors/missingIdError.js";
 
 const router = Router();
 
@@ -52,6 +53,16 @@ router.put(
   },
   notFoundErrorHandler,
 );
+
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new MissingIdError();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.delete(
   "/:id",

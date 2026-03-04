@@ -17,6 +17,7 @@ const requiredFields = [
 ];
 
 const createProperty = async (data) => {
+    const { id: ignore, ...safeData } = data;
   const missingFields = getMissingRequired(data, requiredFields);
 
   const validationIssueList = validationError(data);
@@ -28,7 +29,7 @@ const createProperty = async (data) => {
     throw new InvalidValueTypeError(valueTypeIssueList);
 
   return await prisma.property.create({
-    data,
+    data:safeData,
   });
 };
 

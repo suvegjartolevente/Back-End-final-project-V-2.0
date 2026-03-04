@@ -6,6 +6,7 @@ import getReviewById from "../services/reviews/getReviewById.js";
 import updateReviewById from "../services/reviews/updateReviewById.js";
 import createReview from "../services/reviews/createReview.js";
 import deleteReview from "../services/reviews/deleteReview.js";
+import MissingIdError from "../errors/missingIdError.js";
 
 const router = Router();
 
@@ -38,6 +39,16 @@ router.put(
   },
   notFoundErrorHandler,
 );
+
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new MissingIdError();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get(
   "/:id",

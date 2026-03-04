@@ -5,6 +5,8 @@ import deleteHost from "../services/hosts/deleteHost.js";
 import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 import updateHostById from "../services/hosts/updateHostById.js";
 import getHostById from "../services/hosts/getHostById.js";
+
+import MissingIdError from "../errors/missingIdError.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
@@ -43,6 +45,7 @@ router.put(
     try {
       const { id } = req.params;
       const data = req.body;
+
       const updatedHost = await updateHostById(id, data);
       res.status(200).json(updatedHost);
     } catch (error) {
@@ -51,6 +54,16 @@ router.put(
   },
   notFoundErrorHandler,
 );
+
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new MissingIdError();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.delete(
   "/:id",

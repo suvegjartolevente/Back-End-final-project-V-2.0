@@ -6,6 +6,7 @@ import { valueTypeError } from "../../errors/valueTypeError.js";
 import prisma from "../../src/prisma.js";
 const requiredFields = ["userId", "propertyId", "rating", "comment"];
 const createReview = async (data) => {
+  const { id: ignore, ...safeData } = data;
   const missingFields = getMissingRequired(data, requiredFields);
 
   const validationIssueList = validationError(data);
@@ -16,7 +17,7 @@ const createReview = async (data) => {
   else if (valueTypeIssueList.length)
     throw new InvalidValueTypeError(valueTypeIssueList);
   return await prisma.review.create({
-    data,
+    data: safeData,
   });
 };
 

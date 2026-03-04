@@ -7,11 +7,15 @@ import createProperty from "../services/properties/createProperty.js";
 import getPropertyById from "../services/properties/getPropertyById.js";
 import deleteProperty from "../services/properties/deleteProperty.js";
 import updatePropertyById from "../services/properties/updatePropertyById.js";
+import MissingIdError from "../errors/missingIdError.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const { location, pricePerNight } = req.query;
-  const propreties = await getProperties(location, pricePerNight);
+  const { location } = req.query;
+  const price = req.query.pricePerNight
+    ? parseFloat(req.query.pricePerNight)
+    : undefined;
+  const propreties = await getProperties(location, price);
   res.status(200).json(propreties);
 });
 
@@ -53,6 +57,16 @@ router.put(
   },
   notFoundErrorHandler,
 );
+
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new MissingIdError();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.delete(
   "/:id",

@@ -6,6 +6,7 @@ import getUsers from "../services/users/getUsers.js";
 import createUser from "../services/users/createUser.js";
 import deleteUser from "../services/users/deleteUser.js";
 import updatedUserById from "../services/users/updateUserById.js";
+import MissingIdError from "../errors/missingIdError.js";
 
 const router = Router();
 
@@ -55,6 +56,16 @@ router.put(
   },
   notFoundErrorHandler,
 );
+
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      throw new MissingIdError();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.delete(
   "/:id",
