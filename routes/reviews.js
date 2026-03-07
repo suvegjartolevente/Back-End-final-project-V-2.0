@@ -1,6 +1,6 @@
 import { Router } from "express";
 import getReviews from "../services/reviews/getReviews.js";
-
+import authMiddleware from "../middleware/auth.js";
 import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 import getReviewById from "../services/reviews/getReviewById.js";
 import updateReviewById from "../services/reviews/updateReviewById.js";
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
   res.status(200).json(reviews);
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", authMiddleware,async (req, res, next) => {
   try {
     const data = req.body;
     const newReview = await createReview(data);
@@ -26,7 +26,7 @@ router.post("/", async (req, res, next) => {
 });
 
 router.put(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -65,7 +65,7 @@ router.get(
 );
 
 router.delete(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;

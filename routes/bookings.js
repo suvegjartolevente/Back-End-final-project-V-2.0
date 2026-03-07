@@ -6,6 +6,7 @@ import createBooking from "../services/bookings/createBooking.js";
 import updateBookingById from "../services/bookings/updateBookingById.js";
 import deleteBooking from "../services/bookings/deleteBooking.js";
 import MissingIdError from "../errors/missingIdError.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.get("/", async (req, res) => {
   res.status(200).json(bookings);
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/",authMiddleware, async (req, res, next) => {
   try {
     const data = req.body;
 
@@ -40,7 +41,7 @@ router.get(
 );
 
 router.put(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -65,7 +66,7 @@ router.put("/", async (req, res, next) => {
 });
 
 router.delete(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;

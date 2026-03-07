@@ -7,7 +7,7 @@ import createUser from "../services/users/createUser.js";
 import deleteUser from "../services/users/deleteUser.js";
 import updatedUserById from "../services/users/updateUserById.js";
 import MissingIdError from "../errors/missingIdError.js";
-
+import authMiddleware from "../middleware/auth.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
   res.status(200).json(users);
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const data = req.body;
 
@@ -43,6 +43,7 @@ router.get(
 
 router.put(
   "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const data = req.body;
@@ -69,6 +70,7 @@ router.put("/", async (req, res, next) => {
 
 router.delete(
   "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;

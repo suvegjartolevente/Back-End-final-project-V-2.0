@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
-
+import authMiddleware from "../middleware/auth.js";
 import getProperties from "../services/properties/getProperties.js";
 import createProperty from "../services/properties/createProperty.js";
 import getPropertyById from "../services/properties/getPropertyById.js";
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
   res.status(200).json(propreties);
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/",authMiddleware, async (req, res, next) => {
   try {
     const data = req.body;
     const newProperty = await createProperty(data);
@@ -44,7 +44,7 @@ router.get(
 );
 
 router.put(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -69,7 +69,7 @@ router.put("/", async (req, res, next) => {
 });
 
 router.delete(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;

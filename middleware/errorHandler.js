@@ -6,6 +6,8 @@ import EmptyUpdateBodyError from "../errors/emptyUpdateBodyError.js";
 import HostIdMustBeValidError from "../errors/hostIdMustBeValidError.js";
 import MissingIdError from "../errors/missingIdError.js";
 
+import IdAndTimeError from "../errors/idAndTimeValidationError.js";
+
 const errorHandler = (err, req, res, next) => {
   console.error(err);
   if (err instanceof DuplicateUsernameError)
@@ -19,6 +21,8 @@ const errorHandler = (err, req, res, next) => {
   else if (err instanceof HostIdMustBeValidError)
     return res.status(400).json({ message: err.message });
   else if (err instanceof MissingIdError)
+    return res.status(400).json({ message: err.message });
+  else if (err instanceof IdAndTimeError)
     return res.status(400).json({ message: err.message });
   res.status(500).json({ message: "Something went wrong!" });
 };

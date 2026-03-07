@@ -5,7 +5,7 @@ import deleteHost from "../services/hosts/deleteHost.js";
 import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 import updateHostById from "../services/hosts/updateHostById.js";
 import getHostById from "../services/hosts/getHostById.js";
-
+import authMiddleware from "../middleware/auth.js";
 import MissingIdError from "../errors/missingIdError.js";
 const router = Router();
 
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
   res.status(200).json(hosts);
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/",authMiddleware, async (req, res, next) => {
   try {
     const data = req.body;
     const newHost = await createHost(data);
@@ -40,7 +40,7 @@ router.get(
 );
 
 router.put(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -66,7 +66,7 @@ router.put("/", async (req, res, next) => {
 });
 
 router.delete(
-  "/:id",
+  "/:id",authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
