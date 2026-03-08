@@ -34,7 +34,7 @@ const createProperty = async (data) => {
     return await prisma.property.create({
       data: safeData,
     });
-    d0x;
+    
   } catch (err) {
     if (err?.code === "P2003") {
       throw new IdAndTimeError("HostId");
