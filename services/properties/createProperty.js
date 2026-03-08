@@ -1,7 +1,6 @@
 import getMissingRequired from "../../errors/getMissingRequired.js";
 import IdAndTimeError from "../../errors/idAndTimeValidationError.js";
 
-
 import InvalidValueTypeError from "../../errors/invalidValueTypeError.js";
 import MissingRequiredFieldsError from "../../errors/missingRequiredFieldsError.js";
 import { validationError } from "../../errors/validationError.js";
@@ -35,6 +34,7 @@ const createProperty = async (data) => {
     return await prisma.property.create({
       data: safeData,
     });
+    d0x;
   } catch (err) {
     if (err?.code === "P2003") {
       throw new IdAndTimeError("HostId");

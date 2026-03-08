@@ -7,10 +7,21 @@ import bookingsRouter from "../routes/bookings.js";
 import loginRouter from "../routes/login.js";
 import log from "../middleware/logMiddleware.js";
 import errorHandler from "../middleware/errorHandler.js";
+import * as Sentry from "@sentry/node";
 import "dotenv/config";
 
 const app = express();
+Sentry.init({
+  dsn: "https://f35e03dc909143929674389ae4879df3@o4511004562423808.ingest.de.sentry.io/4511004567273552",
 
+  enableLogs: true,
+
+  tracesSampleRate: 1.0,
+
+  sendDefaultPii: true,
+});
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 app.use(express.json());
 
 app.use(log);
@@ -25,6 +36,7 @@ app.get("/", (req, res) => {
   res.send("Hello world!");
 });
 
+app.use(Sentry.Handlers.errorHandler());
 app.use(errorHandler);
 
 app.listen(3000, () => {

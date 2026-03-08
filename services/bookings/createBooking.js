@@ -7,7 +7,6 @@ import getMissingRequired from "../../errors/getMissingRequired.js";
 
 import IdAndTimeError from "../../errors/idAndTimeValidationError.js";
 
-
 const requiredFields = [
   "userId",
   "propertyId",
@@ -25,18 +24,18 @@ const createBooking = async (data) => {
 
   const validationIssueList = validationError(data);
   const valueTypeIssueList = valueTypeError(data);
-  console.log(checkin)
+
+  if (missingFields.length) throw new MissingRequiredFieldsError(missingFields);
+  if (validationIssueList.length)
+    throw new MissingRequiredFieldsError(validationIssueList);
+  if (valueTypeIssueList.length)
+    throw new InvalidValueTypeError(valueTypeIssueList);
   if (isNaN(checkin) || isNaN(checkout)) {
     throw new IdAndTimeError(" Checkindate and checkoutdate  ");
   }
   if (checkin > checkout) {
     throw new IdAndTimeError(" Checkindate must be before checkoutdate and");
   }
-  if (missingFields.length) throw new MissingRequiredFieldsError(missingFields);
-  if (validationIssueList.length)
-    throw new MissingRequiredFieldsError(validationIssueList);
-  else if (valueTypeIssueList.length)
-    throw new InvalidValueTypeError(valueTypeIssueList);
   try {
     return await prisma.booking.create({
       data: safeData,

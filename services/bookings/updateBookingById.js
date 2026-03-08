@@ -10,20 +10,12 @@ import { valueTypeError } from "../../errors/valueTypeError.js";
 import prisma from "../../src/prisma.js";
 
 const updateBookingById = async (id, data) => {
- 
-
   const { id: ignore, ...safeData } = data;
   const checkin = new Date(data.checkinDate);
   const checkout = new Date(data.checkoutDate);
   const validationIssueList = validationError(data);
   const valueTypeIssueList = valueTypeError(data);
 
-  if (isNaN(checkin) || isNaN(checkout)) {
-    throw new IdAndTimeError(" Checkindate and checkoutdate  ");
-  }
-  if (checkin > checkout) {
-    throw new IdAndTimeError(" Checkindate must be before checkoutdate and");
-  }
   if (Object.entries(data).length === 0) {
     throw new EmptyUpdateBodyError();
   }
@@ -32,6 +24,12 @@ const updateBookingById = async (id, data) => {
 
   if (valueTypeIssueList.length)
     throw new InvalidValueTypeError(valueTypeIssueList);
+  if (isNaN(checkin) || isNaN(checkout)) {
+    throw new IdAndTimeError(" Checkindate and checkoutdate  ");
+  }
+  if (checkin > checkout) {
+    throw new IdAndTimeError(" Checkindate must be before checkoutdate and");
+  }
   try {
     const updatedBooking = await prisma.booking.update({
       where: { id },
