@@ -11,7 +11,10 @@ import authMiddleware from "../middleware/auth.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const bookings = await getBookings();
+  
+  const { userId } = req.query;
+  const bookings = await getBookings(userId);
+   
   res.status(200).json(bookings);
 });
 
