@@ -1,3 +1,4 @@
+
 import NotFoundError from "../../errors/notFoundError.js";
 import prisma from "../../src/prisma.js";
 
@@ -11,6 +12,7 @@ const getUsers = async (username, email) => {
       email,
     },
   });
+
   if (!user.length) {
     throw new NotFoundError("User with parameter");
   }

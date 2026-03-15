@@ -8,6 +8,7 @@ import deleteUser from "../services/users/deleteUser.js";
 import updatedUserById from "../services/users/updateUserById.js";
 import MissingIdError from "../errors/missingIdError.js";
 import authMiddleware from "../middleware/auth.js";
+import InvalidQueryParameter from "../errors/InvalidQueryParameterError.js";
 const router = Router();
 
 router.get(
@@ -15,6 +16,17 @@ router.get(
   async (req, res, next) => {
     try {
       const { username, email } = req.query;
+
+      const [reqParams] = Object.keys(req.query);
+      const possibleParams = ["username", "email"];
+
+      if (
+        Object.keys(req.query).length &&
+        !possibleParams.includes(reqParams)
+      ) {
+        throw new InvalidQueryParameter();
+      }
+
       const users = await getUsers(username, email);
       res.status(200).json(users);
     } catch (error) {
