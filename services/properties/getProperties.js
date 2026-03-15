@@ -1,7 +1,8 @@
+import NotFoundError from "../../errors/notFoundError.js";
 import prisma from "../../src/prisma.js";
 
 const getProperties = async (location, pricePerNight) => {
-  return prisma.property.findMany({
+  const property = await prisma.property.findMany({
     include: {
       reviews: {
         select: {
@@ -16,6 +17,10 @@ const getProperties = async (location, pricePerNight) => {
       pricePerNight,
     },
   });
+   if (!property.length) {
+    throw new NotFoundError("Property with parameter");
+  }
+  return property;
 };
 
 export default getProperties;

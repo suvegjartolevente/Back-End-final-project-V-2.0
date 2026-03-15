@@ -1,3 +1,4 @@
+import EmptyUpdateBodyError from "../../errors/emptyUpdateBodyError.js";
 import getMissingRequired from "../../errors/getMissingRequired.js";
 import IdAndTimeError from "../../errors/idAndTimeValidationError.js";
 
@@ -13,6 +14,10 @@ const createReview = async (data) => {
 
   const validationIssueList = validationError(data);
   const valueTypeIssueList = valueTypeError(data);
+if (Object.entries(data).length === 0) {
+    throw new EmptyUpdateBodyError();
+  }
+
   if (missingFields.length) throw new MissingRequiredFieldsError(missingFields);
   if (validationIssueList.length)
     throw new MissingRequiredFieldsError(validationIssueList);

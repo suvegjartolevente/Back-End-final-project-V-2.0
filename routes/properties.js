@@ -10,16 +10,24 @@ import updatePropertyById from "../services/properties/updatePropertyById.js";
 import MissingIdError from "../errors/missingIdError.js";
 const router = Router();
 
-router.get("/", async (req, res) => {
-  const { location } = req.query;
-  const price = req.query.pricePerNight
-    ? parseFloat(req.query.pricePerNight)
-    : undefined;
-  const propreties = await getProperties(location, price);
-  res.status(200).json(propreties);
-});
+router.get(
+  "/",
+  async (req, res, next) => {
+    try {
+      const { location } = req.query;
+      const price = req.query.pricePerNight
+        ? parseFloat(req.query.pricePerNight)
+        : undefined;
+      const propreties = await getProperties(location, price);
+      res.status(200).json(propreties);
+    } catch (error) {
+      next(error);
+    }
+  },
+  notFoundErrorHandler,
+);
 
-router.post("/",authMiddleware, async (req, res, next) => {
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const data = req.body;
     const newProperty = await createProperty(data);
@@ -44,7 +52,8 @@ router.get(
 );
 
 router.put(
-  "/:id",authMiddleware,
+  "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -69,7 +78,8 @@ router.put("/", async (req, res, next) => {
 });
 
 router.delete(
-  "/:id",authMiddleware,
+  "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;

@@ -9,13 +9,18 @@ import authMiddleware from "../middleware/auth.js";
 import MissingIdError from "../errors/missingIdError.js";
 const router = Router();
 
-router.get("/", async (req, res) => {
-  const { name } = req.query;
-  const hosts = await getHosts(name);
-  res.status(200).json(hosts);
-});
+router.get("/", async (req, res, next) => {
+  try {
+    const { name } = req.query;
+    const hosts = await getHosts(name);
+    res.status(200).json(hosts);
+  } catch (error) {
+    next(error);
+  }
+},
+  notFoundErrorHandler,);
 
-router.post("/",authMiddleware, async (req, res, next) => {
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const data = req.body;
     const newHost = await createHost(data);
@@ -40,7 +45,8 @@ router.get(
 );
 
 router.put(
-  "/:id",authMiddleware,
+  "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -66,7 +72,8 @@ router.put("/", async (req, res, next) => {
 });
 
 router.delete(
-  "/:id",authMiddleware,
+  "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;

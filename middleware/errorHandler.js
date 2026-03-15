@@ -9,7 +9,7 @@ import MissingIdError from "../errors/missingIdError.js";
 import IdAndTimeError from "../errors/idAndTimeValidationError.js";
 
 const errorHandler = (err, req, res, next) => {
-  console.error(err);
+  
   if (err instanceof DuplicateUsernameError)
     return res.status(409).json({ message: err.message });
   else if (err instanceof MissingRequiredFieldsError)

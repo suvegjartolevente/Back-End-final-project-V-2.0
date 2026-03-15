@@ -10,11 +10,19 @@ import MissingIdError from "../errors/missingIdError.js";
 import authMiddleware from "../middleware/auth.js";
 const router = Router();
 
-router.get("/", async (req, res) => {
-  const { username, email } = req.query;
-  const users = await getUsers(username, email);
-  res.status(200).json(users);
-});
+router.get(
+  "/",
+  async (req, res, next) => {
+    try {
+      const { username, email } = req.query;
+      const users = await getUsers(username, email);
+      res.status(200).json(users);
+    } catch (error) {
+      next(error);
+    }
+  },
+  notFoundErrorHandler,
+);
 
 router.post("/", authMiddleware, async (req, res, next) => {
   try {

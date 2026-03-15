@@ -1,8 +1,8 @@
-
+import NotFoundError from "../../errors/notFoundError.js";
 import prisma from "../../src/prisma.js";
 
 const getHosts = async (name) => {
-  return prisma.host.findMany({
+  const host = await prisma.host.findMany({
     where: {
       name,
     },
@@ -26,6 +26,10 @@ const getHosts = async (name) => {
       },
     },
   });
+  if (!host.length) {
+    throw new NotFoundError("Host with parameter");
+  }
+  return host;
 };
 
 export default getHosts;

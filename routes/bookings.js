@@ -10,15 +10,19 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  
-  const { userId } = req.query;
-  const bookings = await getBookings(userId);
-   
-  res.status(200).json(bookings);
-});
+router.get("/", async (req, res,next) => {
+  try {
+    const { userId } = req.query;
+    const bookings = await getBookings(userId);
 
-router.post("/",authMiddleware, async (req, res, next) => {
+    res.status(200).json(bookings);
+  } catch (error) {
+    next(error);
+  }
+  
+},notFoundErrorHandler,);
+
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const data = req.body;
 
@@ -44,7 +48,8 @@ router.get(
 );
 
 router.put(
-  "/:id",authMiddleware,
+  "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -69,7 +74,8 @@ router.put("/", async (req, res, next) => {
 });
 
 router.delete(
-  "/:id",authMiddleware,
+  "/:id",
+  authMiddleware,
   async (req, res, next) => {
     try {
       const { id } = req.params;
