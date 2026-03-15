@@ -12,7 +12,7 @@ import "dotenv/config";
 
 const app = express();
 Sentry.init({
-  dsn: "https://f35e03dc909143929674389ae4879df3@o4511004562423808.ingest.de.sentry.io/4511004567273552",
+  dsn: process.env.SENTRY_DSN,
 
   enableLogs: true,
 
@@ -42,3 +42,5 @@ app.use(errorHandler);
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
 });
+
+
