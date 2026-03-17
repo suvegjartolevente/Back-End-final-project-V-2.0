@@ -7,18 +7,31 @@ import updateHostById from "../services/hosts/updateHostById.js";
 import getHostById from "../services/hosts/getHostById.js";
 import authMiddleware from "../middleware/auth.js";
 import MissingIdError from "../errors/missingIdError.js";
+import InvalidQueryParameter from "../errors/InvalidQueryParameterError.js";
 const router = Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-    const { name } = req.query;
-    const hosts = await getHosts(name);
-    res.status(200).json(hosts);
-  } catch (error) {
-    next(error);
-  }
-},
-  notFoundErrorHandler,);
+router.get(
+  "/",
+  async (req, res, next) => {
+    try {
+      const { name } = req.query;
+      const [reqParams] = Object.keys(req.query);
+      const possibleParams = ["name"];
+
+      if (
+        Object.keys(req.query).length &&
+        !possibleParams.includes(reqParams)
+      ) {
+        throw new InvalidQueryParameter();
+      }
+      const hosts = await getHosts(name);
+      res.status(200).json(hosts);
+    } catch (error) {
+      next(error);
+    }
+  },
+  notFoundErrorHandler,
+);
 
 router.post("/", authMiddleware, async (req, res, next) => {
   try {

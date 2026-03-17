@@ -7,20 +7,34 @@ import updateBookingById from "../services/bookings/updateBookingById.js";
 import deleteBooking from "../services/bookings/deleteBooking.js";
 import MissingIdError from "../errors/missingIdError.js";
 import authMiddleware from "../middleware/auth.js";
+import InvalidQueryParameter from "../errors/InvalidQueryParameterError.js";
 
 const router = Router();
 
-router.get("/", async (req, res,next) => {
-  try {
-    const { userId } = req.query;
-    const bookings = await getBookings(userId);
+router.get(
+  "/",
+  async (req, res, next) => {
+    try {
+      const { userId } = req.query;
 
-    res.status(200).json(bookings);
-  } catch (error) {
-    next(error);
-  }
-  
-},notFoundErrorHandler,);
+      const [reqParams] = Object.keys(req.query);
+      const possibleParams = ["userId"];
+
+      if (
+        Object.keys(req.query).length &&
+        !possibleParams.includes(reqParams)
+      ) {
+        throw new InvalidQueryParameter();
+      }
+      const bookings = await getBookings(userId);
+
+      res.status(200).json(bookings);
+    } catch (error) {
+      next(error);
+    }
+  },
+  notFoundErrorHandler,
+);
 
 router.post("/", authMiddleware, async (req, res, next) => {
   try {

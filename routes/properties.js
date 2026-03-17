@@ -8,6 +8,8 @@ import getPropertyById from "../services/properties/getPropertyById.js";
 import deleteProperty from "../services/properties/deleteProperty.js";
 import updatePropertyById from "../services/properties/updatePropertyById.js";
 import MissingIdError from "../errors/missingIdError.js";
+import InvalidQueryParameter from "../errors/InvalidQueryParameterError.js";
+
 const router = Router();
 
 router.get(
@@ -15,9 +17,39 @@ router.get(
   async (req, res, next) => {
     try {
       const { location } = req.query;
+
       const price = req.query.pricePerNight
         ? parseFloat(req.query.pricePerNight)
         : undefined;
+
+      console.log(
+        "inculdes location",
+        !Object.keys(req.query).includes("location"),
+      );
+      console.log(
+        "inculdes pricePerNight",
+        !Object.keys(req.query).includes("pricePerNight"),
+      );
+      console.log("length", Object.keys(req.query).length);
+
+      if (
+        Object.keys(req.query).length === 1 &&
+        !Object.keys(req.query).includes("location") &&
+        Object.keys(req.query).length === 1 &&
+        !Object.keys(req.query).includes("pricePerNight")
+      ) {
+        throw new InvalidQueryParameter();
+      }
+
+      if (
+        (Object.keys(req.query).length === 2 &&
+          !Object.keys(req.query).includes("location")) ||
+        (Object.keys(req.query).length === 2 &&
+          !Object.keys(req.query).includes("pricePerNight"))
+      ) {
+        throw new InvalidQueryParameter();
+      }
+
       const propreties = await getProperties(location, price);
       res.status(200).json(propreties);
     } catch (error) {
