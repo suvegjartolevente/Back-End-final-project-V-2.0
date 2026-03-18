@@ -22,30 +22,25 @@ router.get(
         ? parseFloat(req.query.pricePerNight)
         : undefined;
 
-      console.log(
-        "inculdes location",
-        !Object.keys(req.query).includes("location"),
-      );
+      const queryKeys = Object.keys(req.query);
+
+      console.log("inculdes location", !queryKeys.includes("location"));
       console.log(
         "inculdes pricePerNight",
-        !Object.keys(req.query).includes("pricePerNight"),
+        !queryKeys.includes("pricePerNight"),
       );
-      console.log("length", Object.keys(req.query).length);
 
       if (
-        Object.keys(req.query).length === 1 &&
-        !Object.keys(req.query).includes("location") &&
-        Object.keys(req.query).length === 1 &&
-        !Object.keys(req.query).includes("pricePerNight")
+        queryKeys.length === 1 &&
+        !queryKeys.includes("location") &&
+        !queryKeys.includes("pricePerNight")
       ) {
         throw new InvalidQueryParameter();
       }
 
       if (
-        (Object.keys(req.query).length === 2 &&
-          !Object.keys(req.query).includes("location")) ||
-        (Object.keys(req.query).length === 2 &&
-          !Object.keys(req.query).includes("pricePerNight"))
+        (queryKeys.length === 2 && !queryKeys.includes("location")) ||
+        (queryKeys.length === 2 && !queryKeys.includes("pricePerNight"))
       ) {
         throw new InvalidQueryParameter();
       }
