@@ -24,12 +24,6 @@ router.get(
 
       const queryKeys = Object.keys(req.query);
 
-      console.log("inculdes location", !queryKeys.includes("location"));
-      console.log(
-        "inculdes pricePerNight",
-        !queryKeys.includes("pricePerNight"),
-      );
-
       if (
         queryKeys.length === 1 &&
         !queryKeys.includes("location") &&
